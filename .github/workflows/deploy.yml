@@ -1,5 +1,9 @@
 name: Deploy
 
+env:
+  FOO_PROD: foo-prod
+  FOO_STAGE: foo-stage
+
 on:
   workflow_call:
     inputs:
@@ -31,5 +35,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    env:
+      FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
     steps:
       - run: echo "hey"
