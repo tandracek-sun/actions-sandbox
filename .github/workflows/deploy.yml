@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      application-name:
+        required: true
+        type: string
+      primary-env-name:
+        required: true
+        type: string
+      worker-env-name:
+        required: true
+        type: string
+      environment:
+        type: string
+        description: environment to deploy to
+        required: true
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - run: echo "hey"
