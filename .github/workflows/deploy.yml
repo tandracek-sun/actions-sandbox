@@ -1,5 +1,7 @@
 name: Deploy
 
+run-name: Deploy to ${{ inputs.environment }}
+
 env:
   FOO_PROD: foo-prod
   FOO_STAGE: foo-stage
