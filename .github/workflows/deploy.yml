@@ -48,3 +48,4 @@ jobs:
           for name in "${array[@]}"; do
             echo "$name"
           done
+          echo "${array[0]}"
