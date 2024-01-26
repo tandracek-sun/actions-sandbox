@@ -43,7 +43,7 @@ jobs:
       - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
       - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
       - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended
-      - run: ls /bin/Sencha/Cmd/4.0.4.84
+      - run: ls /root/bin/Sencha/Cmd/4.0.4.84
       # - env:
       #     FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
       #   run: echo "hey-$FOO"
