@@ -35,7 +35,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
-    env:
-      FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
     steps:
-      - run: echo "hey"
+      - env:
+          FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
+        run: echo "hey-$FOO"
+      - env:
+          CNAME: "foo,bar,baz"
+        run: |
+          IFS=',' read -a array <<< "${{ env.CNAME }}"
+          for name in "${array[@]}"; do
+            echo "$name"
+          done
