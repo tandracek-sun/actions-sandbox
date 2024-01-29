@@ -33,17 +33,43 @@ on:
         options:
           - staging
           - production
+      cond-1:
+        required: false
+        type: boolean
+      cond-2:
+        required: false
+        type: boolean
+      cond-3:
+        required: false
+        type: boolean
 
 jobs:
-  deploy:
+  cond-1:
+    if: inputs.cond-1
     runs-on: ubuntu-latest
-    # environment: ${{ inputs.environment }}
     steps:
-      - run: wget http://cdn.sencha.com/cmd/4.0.4.84/SenchaCmd-4.0.4.84-linux-x64.run.zip
-      - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
-      - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
-      - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended --prefix /opt/Sencha/Cmd/4.0.4.84
-      - run: ls /opt/Sencha/Cmd/4.0.4.84
+      - run: echo "cond 1"
+  cond-2:
+    if: inputs.cond-2
+    needs: [cond-1]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "cond 2"
+  cond-3:
+    needs: [cond-1, cond-2]
+    if: always() && !contains(needs.*.result, 'failure') && inputs.cond-3
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "cond 3"
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   # environment: ${{ inputs.environment }}
+  #   steps:
+  #     - run: wget http://cdn.sencha.com/cmd/4.0.4.84/SenchaCmd-4.0.4.84-linux-x64.run.zip
+  #     - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
+  #     - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
+  #     - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended --prefix /opt/Sencha/Cmd/4.0.4.84
+  #     - run: ls /opt/Sencha/Cmd/4.0.4.84
       # - env:
       #     FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
       #   run: echo "hey-$FOO"
