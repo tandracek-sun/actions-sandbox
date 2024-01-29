@@ -7,7 +7,7 @@ env:
   FOO_STAGE: foo-stage
 
 on:
-  push:
+  # push:
   workflow_call:
     inputs:
       application-name:
@@ -50,8 +50,8 @@ jobs:
     steps:
       - run: echo "cond 1"
   cond-2:
-    if: inputs.cond-2
     needs: [cond-1]
+    if: always() && !contains(needs.*.result, 'failure') && inputs.cond-2
     runs-on: ubuntu-latest
     steps:
       - run: echo "cond 2"
