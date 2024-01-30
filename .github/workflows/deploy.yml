@@ -69,8 +69,8 @@ jobs:
       - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
       - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
       - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended --prefix /opt/Sencha/Cmd/4.0.4.84
-      - run: ls /opt/Sencha/Cmd/4.0.4.84
-      - run: ls /opt/Sencha/Cmd
+      - run: ls -lart /opt/Sencha/Cmd/4.0.4.84
+      - run: ls -lart /opt/Sencha/Cmd/4.0.4.84/Sencha
       - env:
           SENCHA_CMD_3_0_0: /opt/Sencha/Cmd
         run: echo $SENCHA_CMD_3_0_0
