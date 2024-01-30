@@ -61,23 +61,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "cond 3"
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   # environment: ${{ inputs.environment }}
-  #   steps:
-  #     - run: wget http://cdn.sencha.com/cmd/4.0.4.84/SenchaCmd-4.0.4.84-linux-x64.run.zip
-  #     - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
-  #     - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
-  #     - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended --prefix /opt/Sencha/Cmd/4.0.4.84
-  #     - run: ls /opt/Sencha/Cmd/4.0.4.84
-      # - env:
-      #     FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
-      #   run: echo "hey-$FOO"
-      # - env:
-      #     CNAME: "foo,bar,baz"
-      #   run: |
-      #     IFS=',' read -a array <<< "${{ env.CNAME }}"
-      #     for name in "${array[@]}"; do
-      #       echo "$name"
-      #     done
-      #     echo "${array[0]}"
+  deploy:
+    runs-on: ubuntu-latest
+    # environment: ${{ inputs.environment }}
+    steps:
+      - run: wget http://cdn.sencha.com/cmd/4.0.4.84/SenchaCmd-4.0.4.84-linux-x64.run.zip
+      - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
+      - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
+      - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended --prefix /opt/Sencha/Cmd/4.0.4.84
+      - run: ls /opt/Sencha/Cmd/4.0.4.84
+      - run: ls /opt/Sencha/Cmd
+      - env:
+          SENCHA_CMD_3_0_0: /opt/Sencha/Cmd
+        run: echo $SENCHA_CMD_3_0_0
+      - env:
+          FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
+        run: echo "hey-$FOO"
+      - env:
+          CNAME: "foo,bar,baz"
+        run: |
+          IFS=',' read -a array <<< "${{ env.CNAME }}"
+          for name in "${array[@]}"; do
+            echo "$name"
+          done
+          echo "${array[0]}"
