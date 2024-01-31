@@ -65,22 +65,36 @@ jobs:
     runs-on: ubuntu-latest
     # environment: ${{ inputs.environment }}
     steps:
-      - run: wget http://cdn.sencha.com/cmd/4.0.4.84/no-jre/SenchaCmd-4.0.4.84-linux-x64.run.zip
-      - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
-      - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
-      - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended --prefix /opt/Sencha/Cmd/4.0.4.84
-      - run: ls -lart /opt/Sencha/Cmd/4.0.4.84/Sencha/Cmd/4.0.4.84
-      - env:
-          SENCHA_CMD_3_0_0: /opt/Sencha/Cmd
-        run: echo $SENCHA_CMD_3_0_0
-      - env:
-          FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
-        run: echo "hey-$FOO"
-      - env:
-          CNAME: "foo,bar,baz"
+      - name: Checking if service is up
+        env:
+          status_url: http://ldp-staging.elasticbeanstalk.com/status
+          app-name: ldp-web
         run: |
-          IFS=',' read -a array <<< "${{ env.CNAME }}"
-          for name in "${array[@]}"; do
-            echo "$name"
+          while true; do
+            sleep 15
+            html=$(curl --fail --silent ${{ env.status_url }})
+            if grep -q "No services have been found." <(echo $html); then
+              break
+            else
+              echo "${{ env.app-name }} has not come online yet. Waiting 15 seconds before trying again..."
+            fi
           done
-          echo "${array[0]}"
+      # - run: wget http://cdn.sencha.com/cmd/4.0.4.84/no-jre/SenchaCmd-4.0.4.84-linux-x64.run.zip
+      # - run: unzip -o SenchaCmd-4.0.4.84-linux-x64.run.zip
+      # - run: chmod +x SenchaCmd-4.0.4.84-linux-x64.run
+      # - run: ./SenchaCmd-4.0.4.84-linux-x64.run --mode unattended --prefix /opt/Sencha/Cmd/4.0.4.84
+      # - run: ls -lart /opt/Sencha/Cmd/4.0.4.84/Sencha/Cmd/4.0.4.84
+      # - env:
+      #     SENCHA_CMD_3_0_0: /opt/Sencha/Cmd
+      #   run: echo $SENCHA_CMD_3_0_0
+      # - env:
+      #     FOO: ${{ inputs.environment == 'production' && env.FOO_PROD || env.FOO_STAGE }}
+      #   run: echo "hey-$FOO"
+      # - env:
+      #     CNAME: "foo,bar,baz"
+      #   run: |
+      #     IFS=',' read -a array <<< "${{ env.CNAME }}"
+      #     for name in "${array[@]}"; do
+      #       echo "$name"
+      #     done
+      #     echo "${array[0]}"
