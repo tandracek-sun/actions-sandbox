@@ -69,11 +69,12 @@ jobs:
         env:
           status_url: http://ldp-staging.elasticbeanstalk.com/status
           app-name: ldp-web
+          status-test: ALL SYSTEMS GO
         run: |
           while true; do
             sleep 15
             html=$(curl --fail --silent ${{ env.status_url }})
-            if grep -q "No services have been found." <(echo $html); then
+            if grep -q "${{ env.status-test }}" <(echo $html); then
               break
             else
               echo "${{ env.app-name }} has not come online yet. Waiting 15 seconds before trying again..."
