@@ -1,6 +1,6 @@
 name: Deploy
 
-run-name: Deploy ${{join(toJson('[foo, bar]'), ', ')}} to ${{ inputs.environment }}
+run-name: Deploy ${{join(fromJson('[\'foo\', \'bar\']'), ', ')}} to ${{ inputs.environment }}
 
 env:
   FOO_PROD: foo-prod
