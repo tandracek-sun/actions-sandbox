@@ -68,7 +68,9 @@ jobs:
     steps:
       - env:
           stage: ${{ inputs.environment == 'production' && 'prod' || (inputs.environment == 'staging' && 'sta' || 'dev') }}
-        run: echo hey ${{ join('-stage ', env.stage) }}
+        run: |
+          echo hey ${{ env.stage }}
+          echo -stage ${{ env.stage }}
       # - name: Checking if service is up
       #   env:
       #     status_url: http://ldp-staging.elasticbeanstalk.com/status
