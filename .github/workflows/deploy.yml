@@ -56,6 +56,7 @@ jobs:
       - run: echo "running foo"
   cond-1:
     needs: [foo]
+    if: always() && !contains(needs.*.result, 'failure')
     runs-on: ubuntu-latest
     steps:
       - run: echo "cond 1"
