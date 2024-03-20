@@ -43,6 +43,10 @@ on:
       cond-3:
         required: false
         type: boolean
+      skip-foo:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   cond-1:
@@ -62,6 +66,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "cond 3"
+  foo:
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip-foo }}
+    steps:
+      - run: echo "running foo"
   deploy:
     runs-on: ubuntu-latest
     # environment: ${{ inputs.environment }}
